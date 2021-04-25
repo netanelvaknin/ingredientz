@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { lazy } from "react";
+import { Route, Switch } from "react-router-dom";
+import Navbar from "./components/navbar/Navbar";
+import ContextContainer from "./context/ContextContainer";
+const LandingPage = lazy(() => import("./pages/landing-page/LandingPage"));
+const Checkout = lazy(() => import("./pages/checkout/Checkout"));
+const Ingredients = lazy(() => import("./pages/ingredients/Ingredients"));
 
-function App() {
+export default function App() {
+  const pageRoutes = [
+    { path: "/", component: <LandingPage /> },
+    { path: "/ingredients", component: <Ingredients /> },
+    { path: "/checkout", component: <Checkout /> },
+  ];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ContextContainer>
+      <Navbar />
+      <Switch>
+        {pageRoutes.map(({ path, component }) => {
+          return (
+            <Route exact path={path} key={path}>
+              {component}
+            </Route>
+          );
+        })}
+      </Switch>
+    </ContextContainer>
   );
 }
-
-export default App;
