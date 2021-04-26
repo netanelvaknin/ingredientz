@@ -1,10 +1,22 @@
-import { useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import AxiosInstance from "../../api/instance";
 import {
   IngredientModel,
   OrderContext,
 } from "../../context/order/OrderProvider";
 import { useHistory } from "react-router-dom";
+import { CTAButton } from "../../components";
+import { List, ListItem, Divider, Grid } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
+import {
+  CountButton,
+  IngredientName,
+  IngredientText,
+  IngredientsPageContainer,
+  SummaryBar,
+  useListItemStyles,
+} from "./IngredientStyles";
 
 const Ingredients = () => {
   const {
@@ -15,6 +27,7 @@ const Ingredients = () => {
     decrementIngredientCount,
   }: any = useContext(OrderContext);
   const history = useHistory();
+  const listItemClasses = useListItemStyles();
 
   useEffect(() => {
     const getIngredients = async () => {
@@ -38,32 +51,69 @@ const Ingredients = () => {
   }, [setIngredients]);
 
   return (
-    <div>
-      {ingredients.map(
-        ({ name, price, count }: IngredientModel, index: number) => {
-          return (
-            <p key={index}>
-              <button onClick={() => incrementIngredientCount(index)}>
-                Add
-              </button>{" "}
-              {name}, {price} , {count}
-              <button
-                disabled={ingredients[index].count === 0}
-                onClick={() => decrementIngredientCount(index)}
-              >
-                Remove
-              </button>
-            </p>
-          );
-        }
-      )}
+    <IngredientsPageContainer>
+      <List style={{ marginBottom: "3rem" }}>
+        {ingredients.map(
+          ({ name, price, count }: IngredientModel, index: number) => {
+            return (
+              <React.Fragment key={index}>
+                <ListItem classes={{ root: listItemClasses.root }} key={index}>
+                  <IngredientName>{name}</IngredientName>
+                  <IngredientText>
+                    <Grid container direction="column">
+                      <Grid item>
+                        <strong style={{ marginRight: ".5rem" }}>Price</strong>
+                        <span style={{ fontSize: "1.3rem" }}>(For each)</span>
+                      </Grid>
+                      <Grid item>{price} $</Grid>
+                    </Grid>
+                  </IngredientText>
 
-      <p>Final Price: {price}</p>
+                  <IngredientText>
+                    <Grid container direction="column">
+                      <Grid item>
+                        <strong>Quantity</strong>
+                      </Grid>
+                      <Grid item>
+                        <span>{count}</span>
+                      </Grid>
+                    </Grid>
+                  </IngredientText>
 
-      <button disabled={price === 0} onClick={() => history.push("/checkout")}>
-        Checkout
-      </button>
-    </div>
+                  <CountButton
+                    variant="plus"
+                    onClick={() => incrementIngredientCount(index)}
+                  >
+                    <AddIcon />
+                  </CountButton>
+                  <CountButton
+                    variant="minus"
+                    disabled={ingredients[index].count === 0}
+                    onClick={() => decrementIngredientCount(index)}
+                  >
+                    <RemoveIcon />
+                  </CountButton>
+                </ListItem>
+                <Divider />
+              </React.Fragment>
+            );
+          }
+        )}
+      </List>
+
+      <SummaryBar>
+        <strong style={{ textTransform: "uppercase" }}>
+          Final Price : {price}$
+        </strong>
+
+        <CTAButton
+          disabled={price === 0}
+          onClick={() => history.push("/checkout")}
+        >
+          Checkout
+        </CTAButton>
+      </SummaryBar>
+    </IngredientsPageContainer>
   );
 };
 
