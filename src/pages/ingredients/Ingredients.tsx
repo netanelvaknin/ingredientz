@@ -6,9 +6,10 @@ import {
 } from "../../context/order/OrderProvider";
 import { useHistory } from "react-router-dom";
 
-function Ingredients() {
+const Ingredients = () => {
   const {
     ingredients,
+    price,
     setIngredients,
     incrementIngredientCount,
     decrementIngredientCount,
@@ -46,7 +47,10 @@ function Ingredients() {
                 Add
               </button>{" "}
               {name}, {price} , {count}
-              <button onClick={() => decrementIngredientCount(index)}>
+              <button
+                disabled={ingredients[index].count === 0}
+                onClick={() => decrementIngredientCount(index)}
+              >
                 Remove
               </button>
             </p>
@@ -54,9 +58,13 @@ function Ingredients() {
         }
       )}
 
-      <button onClick={() => history.push("/checkout")}>Checkout</button>
+      <p>Final Price: {price}</p>
+
+      <button disabled={price === 0} onClick={() => history.push("/checkout")}>
+        Checkout
+      </button>
     </div>
   );
-}
+};
 
 export default Ingredients;

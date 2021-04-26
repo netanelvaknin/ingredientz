@@ -32,10 +32,9 @@ export const OrderProvider = ({ children }: RootProviderProps) => {
     if (ingredients[index].count < MAX_INGREDIENT_COUNT) {
       const copy: any = [...ingredients];
       copy[index].count = copy[index].count + 1;
-      copy[index].price = copy[index].price * 2;
 
       setIngredients(copy);
-      calculatePrice();
+      calculatePrice("increment");
     }
   };
 
@@ -43,14 +42,26 @@ export const OrderProvider = ({ children }: RootProviderProps) => {
     if (ingredients[index].count > MIN_INGREDIENT_COUNT) {
       const copy: any = [...ingredients];
       copy[index].count = copy[index].count - 1;
-      copy[index].price = copy[index].price / 2;
 
       setIngredients(copy);
-      calculatePrice();
+      calculatePrice("decrement");
     }
   };
 
-  const calculatePrice = () => {};
+  const calculatePrice = (action: "increment" | "decrement") => {
+    let finalPrice: number = 0;
+    const selectedIngredients = ingredients.filter(
+      (ingredient: IngredientModel) => {
+        return ingredient.count > 0;
+      }
+    );
+
+    selectedIngredients.forEach((ingredient: IngredientModel) => {
+      finalPrice += ingredient.price * ingredient.count;
+    });
+
+    setPrice(finalPrice);
+  };
 
   return (
     <OrderContext.Provider
