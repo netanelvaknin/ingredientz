@@ -35,7 +35,7 @@ const Ingredients = () => {
     };
 
     getIngredients();
-  }, []);
+  }, [setIngredients]);
 
   return (
     <div>

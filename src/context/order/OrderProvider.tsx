@@ -13,6 +13,7 @@ export interface IOrderContext {
   decrementIngredientCount: (index: number) => void;
   price: number;
   setPrice: (price: number) => void;
+  resetOrder: () => void;
 }
 
 export const OrderContext = createContext<IOrderContext | undefined>(undefined);
@@ -34,7 +35,7 @@ export const OrderProvider = ({ children }: RootProviderProps) => {
       copy[index].count = copy[index].count + 1;
 
       setIngredients(copy);
-      calculatePrice("increment");
+      calculatePrice();
     }
   };
 
@@ -44,11 +45,11 @@ export const OrderProvider = ({ children }: RootProviderProps) => {
       copy[index].count = copy[index].count - 1;
 
       setIngredients(copy);
-      calculatePrice("decrement");
+      calculatePrice();
     }
   };
 
-  const calculatePrice = (action: "increment" | "decrement") => {
+  const calculatePrice = () => {
     let finalPrice: number = 0;
     const selectedIngredients = ingredients.filter(
       (ingredient: IngredientModel) => {
@@ -60,7 +61,11 @@ export const OrderProvider = ({ children }: RootProviderProps) => {
       finalPrice += ingredient.price * ingredient.count;
     });
 
-    setPrice(finalPrice);
+    setPrice(parseFloat(finalPrice.toFixed(2)));
+  };
+
+  const resetOrder = () => {
+    setPrice(0);
   };
 
   return (
@@ -72,6 +77,7 @@ export const OrderProvider = ({ children }: RootProviderProps) => {
         decrementIngredientCount,
         price,
         setPrice,
+        resetOrder,
       }}
     >
       {children}

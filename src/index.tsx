@@ -1,4 +1,4 @@
-import { StrictMode, Suspense } from "react";
+import { Suspense } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
@@ -9,18 +9,16 @@ import theme from "./theme/index";
 import App from "./App";
 
 ReactDOM.render(
-  <StrictMode>
-    <Suspense fallback={<div>Loading...</div>}>
-      <Router>
-        <MuiThemeProvider theme={theme}>
-          <ThemeProvider theme={theme}>
-            <GlobalStyles />
-            <CssBaseline />
-            <App />
-          </ThemeProvider>
-        </MuiThemeProvider>
-      </Router>
-    </Suspense>
-  </StrictMode>,
+  <Suspense fallback={<div>Loading...</div>}>
+    <Router>
+      <MuiThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
+          <CssBaseline />
+          <App />
+        </ThemeProvider>
+      </MuiThemeProvider>
+    </Router>
+  </Suspense>,
   document.getElementById("root")
 );

@@ -5,19 +5,21 @@ import { Controller } from "react-hook-form";
 interface TextFieldProps {
   label?: string;
   name: string;
-  //   register: any;
   control: any;
   multiline?: boolean;
   rows?: number;
+  error?: boolean;
+  errorMessage?: string;
 }
 
 export const TextField = ({
   label,
-  //   register,
   control,
   name,
   multiline = false,
   rows,
+  error,
+  errorMessage,
 }: TextFieldProps) => {
   return (
     <Controller
@@ -31,6 +33,8 @@ export const TextField = ({
           name={name}
           multiline={multiline}
           rows={rows}
+          error={error}
+          helperText={errorMessage}
         />
       )}
     />

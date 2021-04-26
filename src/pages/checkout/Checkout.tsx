@@ -7,7 +7,10 @@ import { TextField } from "../../components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-interface FormDataModel {
+import { useHistory } from "react-router-dom";
+import SummaryModal from "./summary-modal/SummaryModal";
+
+export interface FormDataModel {
   name: string;
   email: string;
   additionalNotes: string;
@@ -19,26 +22,26 @@ const schema = yup.object().shape({
   additionalNotes: yup.string().min(2).max(50).required(),
 });
 
+const initialFormValues = {
+  name: "",
+  email: "",
+  additionalNotes: "",
+};
+
 const Checkout = () => {
-  const {
-    ingredients,
-    price,
-    setIngredients,
-    incrementIngredientCount,
-    decrementIngredientCount,
-  }: any = useContext(OrderContext);
+  const { ingredients, price }: any = useContext(OrderContext);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [contactInformation, setContactInformation] = useState<FormDataModel>(
+    initialFormValues
+  );
+  const [modalOpen, setModalOpen] = useState(false);
+  const history = useHistory();
   const {
     control,
     formState: { errors },
     handleSubmit,
   } = useForm({
-    defaultValues: {
-      name: "",
-      email: "",
-      additionalNotes: "",
-    },
+    defaultValues: initialFormValues,
     resolver: yupResolver(schema),
   });
 
@@ -49,14 +52,16 @@ const Checkout = () => {
     });
 
     setSelectedIngredients(selected);
-  }, []);
+  }, [ingredients]);
 
   const onSubmit = (formData: FormDataModel) => {
-    console.log(formData);
+    setContactInformation(formData);
+    setModalOpen(true);
   };
 
   return (
     <div>
+      <button onClick={() => history.push("/ingredients")}>Go back</button>
       {selectedIngredients.map(
         ({ price, count, name }: IngredientModel, index: number) => {
           return (
@@ -72,18 +77,42 @@ const Checkout = () => {
       <div>finalPrice: {price}</div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <TextField label="Name" name="name" control={control} />
-        <TextField label="Email" name="email" control={control} />
+        <TextField
+          label="Name"
+          name="name"
+          control={control}
+          error={!!errors.name}
+          errorMessage={errors.name && errors.name.message}
+        />
+        <TextField
+          label="Email"
+          name="email"
+          control={control}
+          error={!!errors.email}
+          errorMessage={errors.email && errors.email.message}
+        />
         <TextField
           label="Additional Notes"
           name="additionalNotes"
           control={control}
           multiline
           rows={4}
+          error={!!errors.additionalNotes}
+          errorMessage={
+            errors.additionalNotes && errors.additionalNotes.message
+          }
         />
 
         <button type="submit">Order</button>
       </form>
+
+      <SummaryModal
+        open={modalOpen}
+        setOpen={setModalOpen}
+        selectedIngredients={selectedIngredients}
+        price={price}
+        contactInformation={contactInformation}
+      />
     </div>
   );
 };
