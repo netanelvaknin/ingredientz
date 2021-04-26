@@ -31,20 +31,20 @@ export const OrderProvider = ({ children }: RootProviderProps) => {
 
   const incrementIngredientCount = (index: number) => {
     if (ingredients[index].count < MAX_INGREDIENT_COUNT) {
-      const copy: any = [...ingredients];
-      copy[index].count = copy[index].count + 1;
+      const ingredientsCopy: IngredientModel[] = [...ingredients];
+      ingredientsCopy[index].count = ingredientsCopy[index].count + 1;
 
-      setIngredients(copy);
+      setIngredients(ingredientsCopy);
       calculatePrice();
     }
   };
 
   const decrementIngredientCount = (index: number) => {
     if (ingredients[index].count > MIN_INGREDIENT_COUNT) {
-      const copy: any = [...ingredients];
-      copy[index].count = copy[index].count - 1;
+      const ingredientsCopy: IngredientModel[] = [...ingredients];
+      ingredientsCopy[index].count = ingredientsCopy[index].count - 1;
 
-      setIngredients(copy);
+      setIngredients(ingredientsCopy);
       calculatePrice();
     }
   };

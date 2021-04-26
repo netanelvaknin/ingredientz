@@ -1,7 +1,7 @@
 import { createMuiTheme } from "@material-ui/core";
 
 export default createMuiTheme({
-  direction: "rtl",
+  direction: "ltr",
   typography: {
     htmlFontSize: 10,
     fontFamily: [
@@ -13,11 +13,11 @@ export default createMuiTheme({
   },
   palette: {
     primary: {
-      main: '#265FB1',
-      light: '#D5E6FF',
+      main: '#ff7f41',
+      light: '#f2f2f2',
     },
     secondary: {
-      main: '#FFB462'
+      main: '#97c121'
     },
     error: {
       main: '#F97575'
