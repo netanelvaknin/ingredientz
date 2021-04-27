@@ -1,15 +1,16 @@
-import { useState, useContext, useEffect } from "react";
+import { Fragment, useState, useContext, useEffect } from "react";
 import {
   IngredientModel,
   OrderContext,
 } from "../../context/order/OrderProvider";
-import { TextField } from "../../components";
+import { TextField, CTAButton } from "../../components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import SummaryModal from "./summary-modal/SummaryModal";
-
+import { CheckoutContainer, ListItemText } from "./CheckoutStyle";
+import { List, ListItem, Divider, Grid } from "@material-ui/core";
 export interface FormDataModel {
   name: string;
   email: string;
@@ -17,9 +18,16 @@ export interface FormDataModel {
 }
 
 const schema = yup.object().shape({
-  name: yup.string().required(),
-  email: yup.string().email().required(),
-  additionalNotes: yup.string().min(2).max(50).required(),
+  name: yup.string().required("Required field"),
+  email: yup
+    .string()
+    .email("Please provide valid email address")
+    .required("Required field"),
+  additionalNotes: yup
+    .string()
+    .required("Required field")
+    .min(2, "At least 2 characters required")
+    .max(50, "Maximum 50 characters allowed"),
 });
 
 const initialFormValues = {
@@ -60,50 +68,102 @@ const Checkout = () => {
   };
 
   return (
-    <div>
-      <button onClick={() => history.push("/ingredients")}>Go back</button>
-      {selectedIngredients.map(
-        ({ price, count, name }: IngredientModel, index: number) => {
-          return (
-            <div key={index}>
-              <p>{name}</p>
-              <p>{count}</p>
-              <p>{price}</p>
-            </div>
-          );
-        }
-      )}
+    <CheckoutContainer>
+      <h1>Your order</h1>
+      <List style={{ marginBottom: "3rem" }}>
+        <ListItem
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingLeft: "0",
+            marginTop: "2rem",
+          }}
+        >
+          <ListItemText style={{ fontWeight: "bold" }}>Name</ListItemText>
+          <ListItemText style={{ fontWeight: "bold" }}>Quantity</ListItemText>
+          <ListItemText style={{ fontWeight: "bold" }}>Price</ListItemText>
+        </ListItem>
 
-      <div>finalPrice: {price}</div>
+        {selectedIngredients.map(
+          ({ price, count, name }: IngredientModel, index: number) => {
+            return (
+              <Fragment key={index}>
+                <ListItem
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingLeft: "0",
+                    margin: "2rem 0",
+                  }}
+                >
+                  <ListItemText>{name}</ListItemText>
+                  <ListItemText>{count}</ListItemText>
+                  <ListItemText>{price}$</ListItemText>
+                </ListItem>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          label="Name"
-          name="name"
-          control={control}
-          error={!!errors.name}
-          errorMessage={errors.name && errors.name.message}
-        />
-        <TextField
-          label="Email"
-          name="email"
-          control={control}
-          error={!!errors.email}
-          errorMessage={errors.email && errors.email.message}
-        />
-        <TextField
-          label="Additional Notes"
-          name="additionalNotes"
-          control={control}
-          multiline
-          rows={4}
-          error={!!errors.additionalNotes}
-          errorMessage={
-            errors.additionalNotes && errors.additionalNotes.message
+                <Divider />
+              </Fragment>
+            );
           }
-        />
+        )}
 
-        <button type="submit">Order</button>
+        <ListItem
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            paddingLeft: "0",
+            margin: "2rem 0",
+          }}
+        >
+          <ListItemText style={{ fontWeight: "bold" }}>
+            final price: {price}$
+          </ListItemText>
+        </ListItem>
+      </List>
+
+      <div></div>
+
+      <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: "50rem" }}>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              label="Name"
+              name="name"
+              control={control}
+              error={!!errors.name}
+              errorMessage={errors.name && errors.name.message}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Email"
+              name="email"
+              control={control}
+              error={!!errors.email}
+              errorMessage={errors.email && errors.email.message}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Additional Notes"
+              name="additionalNotes"
+              control={control}
+              multiline
+              rows={4}
+              error={!!errors.additionalNotes}
+              errorMessage={
+                errors.additionalNotes && errors.additionalNotes.message
+              }
+            />
+          </Grid>
+
+          <Grid item>
+            <CTAButton type="submit">Order</CTAButton>
+          </Grid>
+        </Grid>
       </form>
 
       <SummaryModal
@@ -113,7 +173,7 @@ const Checkout = () => {
         price={price}
         contactInformation={contactInformation}
       />
-    </div>
+    </CheckoutContainer>
   );
 };
 

@@ -1,5 +1,6 @@
 import styled from 'styled-components/macro';
 import {makeStyles, IconButton} from '@material-ui/core';
+import {mobile} from '../../utils/screen-sizes';
 
 export const IngredientsPageContainer = styled.div`
   max-width: 100rem;
@@ -23,6 +24,7 @@ export const IngredientText = styled.span`
 export const IngredientName = styled(IngredientText)`
   font-weight: bold;
   text-transform: uppercase;
+  margin-top: -2rem;
 `;
 
 interface CountButtonProps {
@@ -62,4 +64,8 @@ export const SummaryBar = styled.div`
   padding: 0 27rem;
   background: white;
   box-shadow: 0 10px 32px 4px rgb(0 0 0 / 30%);
+
+  @media ${mobile} {
+      padding: 0 1rem;
+  }
 `;

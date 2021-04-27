@@ -57,13 +57,13 @@ const Ingredients = () => {
           ({ name, price, count }: IngredientModel, index: number) => {
             return (
               <React.Fragment key={index}>
-                <ListItem classes={{ root: listItemClasses.root }} key={index}>
+                <ListItem classes={{ root: listItemClasses.root }}>
                   <IngredientName>{name}</IngredientName>
                   <IngredientText>
                     <Grid container direction="column">
                       <Grid item>
                         <strong style={{ marginRight: ".5rem" }}>Price</strong>
-                        <span style={{ fontSize: "1.3rem" }}>(For each)</span>
+                        <span style={{ fontSize: "1.3rem" }}>(Each)</span>
                       </Grid>
                       <Grid item>{price} $</Grid>
                     </Grid>

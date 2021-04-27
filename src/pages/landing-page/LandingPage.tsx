@@ -13,32 +13,16 @@ import {
   LandingPageContainer,
   PrimaryHeading,
 } from "./LandingPageStyles";
+import { useSmallScreen } from "../../hooks/useSmallScreen";
 
 function LandingPage() {
   const history = useHistory();
-  const commonDefaults = {
-    loop: false,
-    autoplay: true,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-
-  const defaultSaladOptions = {
-    animationData: saladAnimation,
-    ...commonDefaults,
-  };
-
-  const defaultHelloOptions = {
-    animationData: helloAnimation,
-    ...commonDefaults,
-    loop: true,
-  };
+  const isSmallScreen = useSmallScreen();
 
   return (
     <LandingPageContainer>
       <Grid container alignItems="center">
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <HelloAnimationContainer>
             <Lottie
               width={50}
@@ -62,17 +46,38 @@ function LandingPage() {
           </CTAButton>
         </Grid>
 
-        <Grid item xs={6}>
-          <Lottie
-            width={500}
-            height={500}
-            options={defaultSaladOptions}
-            isClickToPauseDisabled={true}
-          />
-        </Grid>
+        {!isSmallScreen && (
+          <Grid item xs={6}>
+            <Lottie
+              width={500}
+              height={500}
+              options={defaultSaladOptions}
+              isClickToPauseDisabled={true}
+            />
+          </Grid>
+        )}
       </Grid>
     </LandingPageContainer>
   );
 }
 
 export default LandingPage;
+
+const commonDefaults = {
+  loop: false,
+  autoplay: true,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+  },
+};
+
+const defaultSaladOptions = {
+  animationData: saladAnimation,
+  ...commonDefaults,
+};
+
+const defaultHelloOptions = {
+  animationData: helloAnimation,
+  ...commonDefaults,
+  loop: true,
+};

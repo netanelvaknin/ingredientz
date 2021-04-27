@@ -24,6 +24,10 @@ export default createMuiTheme({
     }
   },
   overrides: {
-    
+    MuiTextField: {
+      root: {
+        width: '100%'
+      }
+    }
   }
 });
