@@ -1,10 +1,11 @@
 import { useContext } from "react";
-import { Modal } from "../../../components";
+import { Modal, CTAButton } from "../../../components";
 import {
   IngredientModel,
   OrderContext,
 } from "../../../context/order/OrderProvider";
 import { useHistory } from "react-router-dom";
+import { Divider } from "@material-ui/core";
 
 export interface FormDataModel {
   name: string;
@@ -38,34 +39,48 @@ const SummaryModal = ({
 
   return (
     <Modal open={open}>
-      <h1>Thank you!</h1>
-      <h2>The delivery is on its way</h2>
+      <h1>Thank you !</h1>
+      <h2 style={{ marginBottom: "2rem" }}>The delivery is on its way</h2>
 
-      <p>Order Summary:</p>
-      <hr />
       <h3>Contact information</h3>
-      <p>Name: {contactInformation.name}</p>
-      <p>Email: {contactInformation.email}</p>
-      <p>Additional Notes: {contactInformation.additionalNotes}</p>
-      <br />
-      <br />
+      <Divider style={{ marginBottom: "2rem" }} />
+      <div style={{ marginBottom: "2rem" }}>
+        <p>Name: {contactInformation.name}</p>
+        <p>Email: {contactInformation.email}</p>
+        {contactInformation.additionalNotes && (
+          <p>Additional Notes: {contactInformation.additionalNotes}</p>
+        )}
+      </div>
 
-      <hr />
-      <h3>Order Details:</h3>
-      <hr />
-      {selectedIngredients.map((ingredient: IngredientModel, index: number) => {
-        return (
-          <div key={index}>
-            <p>{ingredient.name}</p>
-            <p>{ingredient.price}</p>
-            <p>{ingredient.count}</p>
-          </div>
-        );
-      })}
+      <Divider />
+      <h3 style={{ padding: "1rem 0" }}>Order Details:</h3>
+      <Divider />
+      <div style={{ margin: "2rem 0" }}>
+        {selectedIngredients.map(
+          (ingredient: IngredientModel, index: number) => {
+            return (
+              <div key={index}>
+                <span>{ingredient.name}</span>
+                <span style={{ marginLeft: "1rem" }}>{ingredient.count}x</span>
+              </div>
+            );
+          }
+        )}
+      </div>
 
-      <hr />
-      <strong>Final Price: {price}</strong>
-      <button onClick={handleCloseModal}>לדף הבית</button>
+      <Divider />
+      <strong
+        style={{
+          fontSize: "2rem",
+          marginTop: "2rem",
+          textTransform: "uppercase",
+        }}
+      >
+        Final Price: {price}$
+      </strong>
+      <CTAButton style={{ marginTop: "2rem" }} onClick={handleCloseModal}>
+        Done
+      </CTAButton>
     </Modal>
   );
 };

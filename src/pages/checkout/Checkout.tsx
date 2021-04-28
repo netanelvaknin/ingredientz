@@ -7,7 +7,6 @@ import { TextField, CTAButton } from "../../components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
 import SummaryModal from "./summary-modal/SummaryModal";
 import { CheckoutContainer, ListItemText } from "./CheckoutStyle";
 import { List, ListItem, Divider, Grid } from "@material-ui/core";
@@ -25,9 +24,14 @@ const schema = yup.object().shape({
     .required("Required field"),
   additionalNotes: yup
     .string()
-    .required("Required field")
-    .min(2, "At least 2 characters required")
-    .max(50, "Maximum 50 characters allowed"),
+    .notRequired()
+    .test("additionalNotes", "Minimum of 2 characters", function (value) {
+      if (!!value) {
+        const schema = yup.string().min(2);
+        return schema.isValidSync(value);
+      }
+      return true;
+    }),
 });
 
 const initialFormValues = {
@@ -43,7 +47,6 @@ const Checkout = () => {
     initialFormValues
   );
   const [modalOpen, setModalOpen] = useState(false);
-  const history = useHistory();
   const {
     control,
     formState: { errors },

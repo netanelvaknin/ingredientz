@@ -1,4 +1,18 @@
 import styled from "styled-components/macro";
+import { useHistory } from "react-router-dom";
+
+export const Navbar = () => {
+  const history = useHistory();
+  return (
+    <NavbarStyle>
+      <FakeLogo onClick={() => history.push("/")}>
+        INGREDIENT<LastLetter>Z</LastLetter>.
+      </FakeLogo>
+    </NavbarStyle>
+  );
+};
+
+export default Navbar;
 
 const NavbarStyle = styled.nav`
   height: 10rem;
@@ -16,20 +30,9 @@ const NavbarStyle = styled.nav`
 const FakeLogo = styled.h1`
   font-weight: 900;
   color: ${(props) => props.theme.palette.primary.main};
+  cursor: pointer;
 `;
 
 const LastLetter = styled.span`
   color: ${(props) => props.theme.palette.secondary.main};
 `;
-
-export const Navbar = () => {
-  return (
-    <NavbarStyle>
-      <FakeLogo>
-        INGREDIENT<LastLetter>Z</LastLetter>.
-      </FakeLogo>
-    </NavbarStyle>
-  );
-};
-
-export default Navbar;

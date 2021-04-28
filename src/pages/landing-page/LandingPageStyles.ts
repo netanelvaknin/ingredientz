@@ -1,10 +1,15 @@
 import styled from 'styled-components/macro';
+import {mobile} from '../../utils/screen-sizes';
 
 export const LandingPageContainer = styled.div`
   padding-top: 12rem;
   padding-bottom: 12rem;
   max-width: 100rem;
   margin: 0 auto;
+
+  @media ${mobile} {
+    padding: 11rem 2rem 2rem;
+  }
 `;
 
 export const PrimaryHeading = styled.h1`

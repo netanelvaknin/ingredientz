@@ -102,7 +102,7 @@ const Ingredients = () => {
       </List>
 
       <SummaryBar>
-        <strong style={{ textTransform: "uppercase" }}>
+        <strong style={{ textTransform: "uppercase", fontSize: "2rem" }}>
           Final Price : {price}$
         </strong>
 
