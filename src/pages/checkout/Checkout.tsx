@@ -5,34 +5,16 @@ import {
 } from "../../context/order/OrderProvider";
 import { TextField, CTAButton } from "../../components";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import SummaryModal from "./summary-modal/SummaryModal";
 import { CheckoutContainer, ListItemText } from "./CheckoutStyle";
 import { List, ListItem, Divider, Grid } from "@material-ui/core";
+import { schema } from "./schema";
 export interface FormDataModel {
   name: string;
   email: string;
   additionalNotes: string;
 }
-
-const schema = yup.object().shape({
-  name: yup.string().required("Required field"),
-  email: yup
-    .string()
-    .email("Please provide valid email address")
-    .required("Required field"),
-  additionalNotes: yup
-    .string()
-    .notRequired()
-    .test("additionalNotes", "Minimum of 2 characters", function (value) {
-      if (!!value) {
-        const schema = yup.string().min(2);
-        return schema.isValidSync(value);
-      }
-      return true;
-    }),
-});
 
 const initialFormValues = {
   name: "",
