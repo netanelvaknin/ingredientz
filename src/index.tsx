@@ -9,7 +9,7 @@ import theme from "./theme/index";
 import App from "./App";
 
 ReactDOM.render(
-  <Suspense fallback={<div>Loading...</div>}>
+  <Suspense fallback={<h1>Loading...</h1>}>
     <Router>
       <MuiThemeProvider theme={theme}>
         <ThemeProvider theme={theme}>
