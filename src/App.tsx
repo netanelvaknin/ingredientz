@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
-import Navbar from "./components/navbar/Navbar";
+import { Navbar } from "./components";
 import ContextContainer from "./context/ContextContainer";
 import { pageRoutes } from "./routes";
 

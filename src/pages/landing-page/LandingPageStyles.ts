@@ -31,6 +31,7 @@ export const Greeting = styled.span`
   font-size: 1.8rem;
   margin-bottom: 1rem;
   display: block;
+  font-weight: bold;
 `;
 
 export const HelloAnimationContainer = styled.div`
